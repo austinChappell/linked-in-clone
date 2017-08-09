@@ -1,0 +1,103 @@
+body {
+  font-family: sans-serif;
+  margin: 0;
+}
+
+.links {
+  display: flex;
+  justify-content: space-between;
+  background: navy;
+  color: white;
+  padding: 20px 150px;
+}
+
+.links a {
+  color: white;
+  text-decoration: none;
+  font-size: 20px;
+}
+
+.container {
+  width: 90%;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.user {
+  flex-basis: 22%;
+  margin: 5px;
+  flex-grow: 1;
+  border: 1px solid black;
+  padding: 25px;
+  box-sizing: border-box;
+  text-align: center;
+  text-decoration: none;
+  color: black;
+}
+
+.user:hover {
+  background: #eeeeee;
+}
+
+.user h2, .user p {
+  text-align: left;
+}
+
+.unemployed {
+  color: red;
+}
+
+.profile {
+  display: flex;
+  flex-wrap: wrap;
+  width: 60%;
+  margin: 100px auto;
+}
+
+.left {
+  flex-basis: 30%;
+  flex-grow: 1;
+  text-align: right;
+  padding-right: 10px;
+}
+
+.right {
+  flex-basis: 60%;
+  text-align: left;
+  padding-left: 10px;
+}
+
+.single-name {
+  font-size: 2.5em;
+  font-weight: 400;
+  margin: 5px 0;
+}
+
+.single-image {
+  border-radius: 50%;
+  border: 1px solid black;
+}
+
+.basic-info .contact-info {
+  margin: 0;
+}
+
+.titles, .details {
+  margin-top: 20px;
+}
+
+.profile h4, .profile p, .details p {
+  margin: 3px 0 5px;
+}
+
+.skills {
+  padding-left: 0;
+  margin-top: 0;
+}
+
+.skills li {
+  list-style: none;
+  margin: 3px 0 0;
+}
