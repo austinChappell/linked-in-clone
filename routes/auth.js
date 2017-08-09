@@ -22,7 +22,20 @@ router.post('/signup', (req, res, next) => {
   console.log('body', req.body);
   const user = new User({
     username: req.body.username,
-    password: req.body.password
+    password: req.body.password,
+    name: req.body.name,
+    avatar: req.body.avatarURL,
+    email: req.body.email,
+    university: req.body.university,
+    job: req.body.job,
+    company: req.body.company,
+    skills: req.body.skills,
+    phone: req.body.phone,
+    street_num: req.body.street_num,
+    street_name: req.body.street_name,
+    city: req.body.city,
+    state_or_province: req.body.state_or_province,
+    country: req.body.country
   });
   user.save((err) => {
     if (err) {

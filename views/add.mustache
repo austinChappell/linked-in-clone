@@ -7,17 +7,47 @@
   </head>
   <body>
     <div class="links">
-      <a href="/directory">All</a>
-      <a href="/unemployed">Unemployed</a>
-      <a href="/employed">Employed</a>
-      <a href="/add">Add</a>
-      <a href="/login">Login</a>
-      <a href="/signup">Sign Up</a>
-      <a href="/logout">Logout</a>
+      <div class="links-left">
+
+      </div>
+      <div class="links-right">
+        <a href="/login">Login</a>
+        <a href="/signup">Sign Up</a>        
+      </div>
     </div>
 
     <form class="" action="index.html" method="post">
-
+      <label>Username:</label><br />
+      <input type="text" name="username" />
+      <label>Password:</label><br />
+      <input type="password" name="password" />
+      <label>Full Name:</label><br />
+      <input type="text" name="name" />
+      <label>Avatar URL:</label><br />
+      <input type="text" name="avatarURL" />
+      <label>Email:</label><br />
+      <input type="email" name="email" />
+      <label>University:</label><br />
+      <input type="text" name="university" />
+      <label>Occupation:</label><br />
+      <input type="text" name="job" />
+      <label>Company:</label><br />
+      <input type="text" name="company" />
+      <label>Skills: (separate by semicolons)</label><br />
+      <input type="text" name="skills" />
+      <label>Phone:</label><br />
+      <input type="tel" name="phone" />
+      <label>Street Number:</label><br />
+      <input type="text" name="street_num" value="street number" />
+      <label>Street Name:</label><br />
+      <input type="text" name="street_name" value="street name" />
+      <label>City:</label><br />
+      <input type="text" name="city" />
+      <label>State or Province:</label><br />
+      <input type="text" name="state_or_province" />
+      <label>Country:</label><br />
+      <input type="country" name="country" />
+      <button type="submit">Add User</button>
     </form>
   </body>
 </html>

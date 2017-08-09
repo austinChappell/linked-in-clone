@@ -20,7 +20,6 @@ router.get('/directory', authRequired, (req, res) => {
     if (err) {
       console.log(err);
     } else {
-      console.log(users);
       let data = { users };
       res.render('users', data);
     }
@@ -73,6 +72,30 @@ router.get('/skills/:value', authRequired, (req, res) => {
       console.log(results);
       let data = { users: results }
       res.render('users', data);
+    };
+  });
+});
+
+router.get('/profile', authRequired, (req, res) => {
+  console.log('ID==============', req.session.passport.user);
+  User.findById(req.session.passport.user, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(result);
+      res.render('profile', result);
+    };
+  });
+});
+
+router.get('/editprofile', authRequired, (req, res) => {
+  console.log(req.session.passport.user);
+  User.findById(req.session.passport.user, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(result);
+      res.render('edit', {result});
     };
   });
 });
