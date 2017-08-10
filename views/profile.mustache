@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title></title>
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/css/style.css">
   </head>
   <body>
     <div class="links">
@@ -52,6 +52,9 @@
         </ul>
       </div>
     </div>
-    <a id="edit-profile-button" href="/editprofile">Edit Profile</a>
+    <button id="edit-profile-button"><a href="/editprofile">Edit Profile</a></button>
+    <form id="profile-form" action="/delete" method="post">
+      <button id="delete-button" type="submit">Delete</button>
+    </form>
   </body>
 </html>

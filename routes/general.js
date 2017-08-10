@@ -128,6 +128,17 @@ router.post('/editprofile', authRequired, (req, res) => {
   })
 })
 
+router.post('/delete', authRequired, (req, res) => {
+  User.remove({ _id: req.session.passport.user }, (err) => {
+    if (err) {
+      console.log(err);
+    } else {
+      req.logout();
+      res.redirect('/');
+    }
+  })
+})
+
 router.get('/:id', authRequired, (req, res) => {
   User.findById(req.params.id, (err, results) => {
     if (err) {
