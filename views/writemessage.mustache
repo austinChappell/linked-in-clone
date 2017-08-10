@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="/css/style.css">
+  </head>
+  <body>
+    <div class="links">
+      <div class="links-left">
+        <a href="/directory">All</a>
+        <a href="/unemployed">Unemployed</a>
+        <a href="/employed">Employed</a>
+      </div>
+      <div class="links-right">
+        <a href="/profile">Profile</a>
+        <a href="/logout">Logout</a>
+      </div>
+    </div>
+
+    <form class="write-message" action="/writemessage/{{ _id }}" method="POST">
+      <textarea name="message" rows="20" cols="200"></textarea>
+      <button id="submit-button" type="subit" name="button">Send</button>
+    </form>
+
+  </body>
+</html>

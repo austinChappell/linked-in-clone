@@ -141,6 +141,27 @@ router.post('/delete', authRequired, (req, res) => {
       res.redirect('/');
     }
   })
+});
+
+router.get('/messages', authRequired, (req, res) => {
+  User.find({}, (err, results) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render('messages', { results });
+    }
+  })
+});
+
+router.get('/writemessage/:username', authRequired, (req, res) => {
+  User.find({ username: req.params.username }, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(result[0]);
+      res.render('writemessage', result[0]);
+    }
+  })
 })
 
 router.get('/:id', authRequired, (req, res) => {
@@ -154,7 +175,7 @@ router.get('/:id', authRequired, (req, res) => {
         console.log(results);
         res.render('user', results);
       };
-    });    
+    });
   }
 });
 
