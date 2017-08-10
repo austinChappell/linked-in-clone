@@ -94,6 +94,7 @@ router.get('/editprofile', authRequired, (req, res) => {
     if (err) {
       console.log(err);
     } else {
+      result.skills = result.skills.join('; ');
       console.log(result);
       res.render('edit', {result});
     };
@@ -102,6 +103,7 @@ router.get('/editprofile', authRequired, (req, res) => {
 
 router.post('/editprofile', authRequired, (req, res) => {
   let id = req.session.passport.user;
+  let skillsArr = req.body.skills.split(';');
   const editProfile = {
     username: req.body.username,
     name: req.body.name,
@@ -110,7 +112,7 @@ router.post('/editprofile', authRequired, (req, res) => {
     university: req.body.university,
     job: req.body.job,
     company: req.body.company,
-    skills: req.body.skills,
+    skills: skillsArr,
     phone: req.body.phone,
     address: {
       street_num: req.body.street_num,
@@ -142,14 +144,18 @@ router.post('/delete', authRequired, (req, res) => {
 })
 
 router.get('/:id', authRequired, (req, res) => {
-  User.findById(req.params.id, (err, results) => {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(results);
-      res.render('user', results);
-    };
-  });
+  if (req.params.id == req.session.passport.user) {
+    res.redirect('/profile');
+  } else {
+    User.findById(req.params.id, (err, results) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(results);
+        res.render('user', results);
+      };
+    });    
+  }
 });
 
 module.exports = router;

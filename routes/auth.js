@@ -20,6 +20,7 @@ router.get('/signup', (req, res) => {
 
 router.post('/signup', (req, res, next) => {
   console.log('body', req.body);
+  let skillsArr = req.body.skills.split(';');
   const user = new User({
     username: req.body.username,
     password: req.body.password,
@@ -29,7 +30,7 @@ router.post('/signup', (req, res, next) => {
     university: req.body.university,
     job: req.body.job,
     company: req.body.company,
-    skills: req.body.skills,
+    skills: skillsArr,
     phone: req.body.phone,
     address: {
       street_num: req.body.street_num,
