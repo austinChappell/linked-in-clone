@@ -100,6 +100,34 @@ router.get('/editprofile', authRequired, (req, res) => {
   });
 });
 
+router.post('/editprofile', authRequired, (req, res) => {
+  let id = req.session.passport.user;
+  const editProfile = {
+    username: req.body.username,
+    name: req.body.name,
+    avatar: req.body.avatarURL,
+    email: req.body.email,
+    university: req.body.university,
+    job: req.body.job,
+    company: req.body.company,
+    skills: req.body.skills,
+    phone: req.body.phone,
+    street_num: req.body.street_num,
+    street_name: req.body.street_name,
+    city: req.body.city,
+    state_or_province: req.body.state_or_province,
+    country: req.body.country
+  };
+  User.update({ _id: id }, { $set: editProfile }, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(result);
+      res.redirect('/profile');
+    }
+  })
+})
+
 router.get('/:id', authRequired, (req, res) => {
   User.findById(req.params.id, (err, results) => {
     if (err) {
