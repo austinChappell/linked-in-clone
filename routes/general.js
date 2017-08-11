@@ -179,39 +179,39 @@ router.get('/writemessage/:username', authRequired, (req, res) => {
 
 router.post('/writemessage/:id', (req, res) => {
   let senderUsername;
-  User.findById(req.session.passport.user, (err, result) => {
+  User.findById(req.session.passport.user, (err, user) => {
     if (err) {
       console.log(err);
     } else {
-      console.log('SENDER=============================================================================================', result.username);
-      senderUsername = result.username;
+      console.log('SENDER=============================================================================================', user.username);
+      senderUsername = user.username;
+      User.findById(req.params.id, (error, result) => {
+        console.log('SENDERUSERNAME=================================================================================', senderUsername);
+        if (error) {
+          console.log(error);
+        } else {
+          let formattedDate = new Date().toDateString();
+          let newMessage = {
+            message: req.body.message,
+            senderId: req.session.passport.user,
+            senderUsername: senderUsername,
+            read: false,
+            createdAt: formattedDate
+          };
+          result.messages.unshift(newMessage);
+          console.log('RESULT====================================', result);
+          let inbox = result.messages;
+          User.update({ _id: req.params.id }, { $set: { messages: inbox }}, (err, update) => {
+            if (err) {
+              console.log(err);
+            } else {
+              res.redirect('/directory');
+            }
+          });
+        }
+      })
     }
   });
-  User.findById(req.params.id, (err, result) => {
-    console.log('SENDERUSERNAME=================================================================================', senderUsername);
-    if (err) {
-      console.log(err);
-    } else {
-      let formattedDate = new Date().toDateString();
-      let newMessage = {
-        message: req.body.message,
-        senderId: req.session.passport.user,
-        senderUsername: senderUsername,
-        read: false,
-        createdAt: formattedDate
-      };
-      result.messages.push(newMessage);
-      console.log('RESULT====================================', result);
-      let inbox = result.messages;
-      User.update({ _id: req.params.id }, { $set: { messages: inbox }}, (error, update) => {
-        if (err) {
-          console.log(err);
-        } else {
-          res.redirect('/directory');
-        }
-      });
-    }
-  })
 });
 
 router.get('/inbox', authRequired, (req, res) => {

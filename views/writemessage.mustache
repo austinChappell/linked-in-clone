@@ -19,6 +19,7 @@
     </div>
 
     <form class="write-message" action="/writemessage/{{ _id }}" method="POST">
+      <h2>Message to {{ username }}</h2>
       <textarea name="message" rows="20" cols="100"></textarea><br />
       <button id="submit-button" type="subit" name="button">Send</button>
     </form>

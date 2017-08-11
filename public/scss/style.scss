@@ -232,13 +232,13 @@ form input {
   width: 80%;
   max-width: 500px;
   margin: 5px auto;
-  padding: 10px 30px 30px;
   font-size: 18px;
   .message-info {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 15px;
     font-size: 14px;
+    background-color: lightgray;
+    padding: 5px 30px;
     span {
       flex-basis: 30%;
       &.from {
@@ -251,5 +251,8 @@ form input {
         text-align: right;
       }
     }
+  }
+  .message-text {
+    padding: 10px 30px;
   }
 }
