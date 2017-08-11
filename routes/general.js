@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const User = require('../models/user');
+const Message = require('../models/message');
 
 function authRequired(req, res, next) {
   if(req.user) {
@@ -191,13 +192,13 @@ router.post('/writemessage/:id', (req, res) => {
           console.log(error);
         } else {
           let formattedDate = new Date().toDateString();
-          let newMessage = {
+          let newMessage = new Message({
             message: req.body.message,
             senderId: req.session.passport.user,
             senderUsername: senderUsername,
             read: false,
             createdAt: formattedDate
-          };
+          });
           result.messages.unshift(newMessage);
           console.log('RESULT====================================', result);
           let inbox = result.messages;
