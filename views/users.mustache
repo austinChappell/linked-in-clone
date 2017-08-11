@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Users</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="/css/style.css">
   </head>
   <body>
@@ -15,6 +16,7 @@
       <div class="links-right">
         <a href="/profile">Profile</a>
         <a href="/logout">Logout</a>
+        <a id="inbox-icon" href="#"><i class="fa fa-inbox" aria-hidden="true"></i>{{ #userMessages }}<img id="inbox-alert-dot" src="/assets/images/red-dot.png" />{{ /userMessages }}</a>
       </div>
     </div>
     <div class="container">
@@ -31,5 +33,8 @@
       </a>
       {{ /users }}
     </div>
+    <script type="text/javascript" src="/script.js">
+
+    </script>
   </body>
 </html>

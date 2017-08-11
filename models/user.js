@@ -32,7 +32,8 @@ const userSchema = new mongoose.Schema({
     state_or_province: String,
     postal_code: String,
     country: String
-  }
+  },
+  messages: []
 });
 
 userSchema.virtual('password').get(function() {

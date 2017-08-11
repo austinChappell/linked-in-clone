@@ -16,11 +16,25 @@ router.get('/', (req, res) => {
 });
 
 router.get('/directory', authRequired, (req, res) => {
+  User.findById(req.session.passport.user, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      req.session.messageArray = result.messages;
+    }
+  })
+  console.log('USER=======================', req.session);
   User.find({}, (err, users) => {
     if (err) {
       console.log(err);
     } else {
+      console.log('MESSAGES', req.session.messageArray);
       let data = { users };
+      if (req.session.messageArray.length > 0) {
+        data.userMessages = true;
+      } else {
+        data.userMessages = false;
+      }
       res.render('users', data);
     }
   })
@@ -162,7 +176,26 @@ router.get('/writemessage/:username', authRequired, (req, res) => {
       res.render('writemessage', result[0]);
     }
   })
-})
+});
+
+router.post('/writemessage/:id', (req, res) => {
+  User.findById(req.params.id, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      result.messages.push(req.body.message);
+      console.log('RESULT====================================', result);
+      let newMessages = result.messages;
+      User.update({ _id: req.params.id }, { $set: { messages: newMessages }}, (error, update) => {
+        if (err) {
+          console.log(err);
+        } else {
+          res.redirect('/directory');
+        }
+      });
+    }
+  })
+});
 
 router.get('/:id', authRequired, (req, res) => {
   if (req.params.id == req.session.passport.user) {
