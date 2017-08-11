@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="/css/style.css">
+  </head>
+  <body>
+    <div class="links">
+      <div class="links-left">
+        <a href="/directory">All</a>
+        <a href="/unemployed">Unemployed</a>
+        <a href="/employed">Employed</a>
+      </div>
+      <div class="links-right">
+        <a href="/profile">Profile</a>
+        <a href="/logout">Logout</a>
+      </div>
+    </div>
+
+    <div class="all-messages">
+      {{ #messages }}
+      <div class="single-message">
+        <div class="message-info">
+          <span class="from">From: <a href="/{{ senderId }}">{{ senderUsername }}</a></span>
+          <span class="date">{{ createdAt }}</span>
+          <span class="reply"><a href="/writemessage/{{ senderUsername }}">Reply</a></span>
+        </div>
+        {{ message }}
+      </div>
+      {{ /messages }}
+    </div>
+
+  </body>
+</html>

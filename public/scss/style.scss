@@ -222,3 +222,34 @@ form input {
   top: 10px;
   right: 139px;
 }
+
+.all-messages {
+  margin: 30px 0;
+}
+
+.single-message {
+  border: 1px solid black;
+  width: 80%;
+  max-width: 500px;
+  margin: 5px auto;
+  padding: 10px 30px 30px;
+  font-size: 18px;
+  .message-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-size: 14px;
+    span {
+      flex-basis: 30%;
+      &.from {
+        text-align: left;
+      }
+      &.date {
+        text-align: center;
+      }
+      &.reply {
+        text-align: right;
+      }
+    }
+  }
+}

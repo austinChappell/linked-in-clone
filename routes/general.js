@@ -119,7 +119,6 @@ router.post('/editprofile', authRequired, (req, res) => {
   let id = req.session.passport.user;
   let skillsArr = req.body.skills.split(';');
   const editProfile = {
-    username: req.body.username,
     name: req.body.name,
     avatar: req.body.avatarURL,
     email: req.body.email,
@@ -179,14 +178,32 @@ router.get('/writemessage/:username', authRequired, (req, res) => {
 });
 
 router.post('/writemessage/:id', (req, res) => {
-  User.findById(req.params.id, (err, result) => {
+  let senderUsername;
+  User.findById(req.session.passport.user, (err, result) => {
     if (err) {
       console.log(err);
     } else {
-      result.messages.push(req.body.message);
+      console.log('SENDER=============================================================================================', result.username);
+      senderUsername = result.username;
+    }
+  });
+  User.findById(req.params.id, (err, result) => {
+    console.log('SENDERUSERNAME=================================================================================', senderUsername);
+    if (err) {
+      console.log(err);
+    } else {
+      let formattedDate = new Date().toDateString();
+      let newMessage = {
+        message: req.body.message,
+        senderId: req.session.passport.user,
+        senderUsername: senderUsername,
+        read: false,
+        createdAt: formattedDate
+      };
+      result.messages.push(newMessage);
       console.log('RESULT====================================', result);
-      let newMessages = result.messages;
-      User.update({ _id: req.params.id }, { $set: { messages: newMessages }}, (error, update) => {
+      let inbox = result.messages;
+      User.update({ _id: req.params.id }, { $set: { messages: inbox }}, (error, update) => {
         if (err) {
           console.log(err);
         } else {
@@ -195,6 +212,17 @@ router.post('/writemessage/:id', (req, res) => {
       });
     }
   })
+});
+
+router.get('/inbox', authRequired, (req, res) => {
+  User.findById(req.session.passport.user, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log('DATA=================================================================', result);
+      res.render('inbox', result);
+    };
+  });
 });
 
 router.get('/:id', authRequired, (req, res) => {

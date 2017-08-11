@@ -171,4 +171,28 @@ form input {
   top: 10px;
   right: 139px; }
 
+.all-messages {
+  margin: 30px 0; }
+
+.single-message {
+  border: 1px solid black;
+  width: 80%;
+  max-width: 500px;
+  margin: 5px auto;
+  padding: 10px 30px 30px;
+  font-size: 18px; }
+  .single-message .message-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-size: 14px; }
+    .single-message .message-info span {
+      flex-basis: 30%; }
+      .single-message .message-info span.from {
+        text-align: left; }
+      .single-message .message-info span.date {
+        text-align: center; }
+      .single-message .message-info span.reply {
+        text-align: right; }
+
 /*# sourceMappingURL=style.css.map */

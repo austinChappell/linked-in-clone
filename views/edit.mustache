@@ -18,10 +18,9 @@
       </div>
     </div>
 
-    <h1>Login</h1>
+    <h1>Update Profile</h1>
+    <h2>Username: {{ result.username }}</h2>
     <form action="/editprofile" method="POST">
-      <label>Username:</label><br />
-      <input type="text" name="username" placeholder="username" value="{{ result.username }}" />
       <label>Full Name:</label><br />
       <input type="text" name="name" placeholder="name" value="{{ result.name }}" />
       <label>Avatar URL:</label><br />
