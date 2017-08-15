@@ -242,8 +242,16 @@ router.get('/:id', authRequired, (req, res) => {
   }
 });
 
-router.post('/readmessage/:id', authRequired, (req, res) => {
-  Message.update({ _id: req.params.id }, { $set: { read: true }});
+router.get('/readmessage/:id', authRequired, (req, res) => {
+  Message.update({ _id: req.params.id }, { $set: { read: true }}, (err, result) => {
+    if (err) {
+      console.log(err);
+      res.redirect('/inbox');
+    } else {
+      console.log(result);
+      res.send('message');
+    }
+  });
 });
 
 module.exports = router;

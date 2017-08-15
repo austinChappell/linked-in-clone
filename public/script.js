@@ -3,34 +3,23 @@
 let allMessages = document.querySelector('.all-messages');
 
 allMessages.addEventListener('click', function(e) {
-  if (e.target.className === 'message-footer') {
-    alert('hi');
-    console.log(e.target);
-    const message = e.target.previousElementSibling;
-    let messageID = message.getAttribute('data-id');
-    if (message.classList.contains('hide')) {
-      message.classList.remove('hide');
-      e.target.textContent = 'Hide';
-      fetch(`/readmessage/${ messageID }`, {
-        method: 'POST',
-        body: {
-          read: true
-        },
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        }
-      }).then((response) => {
-          return response.json();
-      }).then((json) => {
-          console.log(json);
-        });
-      // .then((result) => {
-      //   console.log('RESULT===================================================================================================================================', result);
-      // })
+
+  console.log(e.target);
+
+  targetElement = e.target;
+
+  function findMessage(targetElement) {
+
+    if (targetElement.className === 'single-message') {
+      const messageID = targetElement.getAttribute('data-id');
+      console.log(messageID);
+      window.location = `/readmessage/${ messageID }`;
     } else {
-      message.classList.add('hide');
-      e.target.textContent = 'Show';
+      targetElement = targetElement.parentElement;
+      findMessage(targetElement);
     }
+
   }
+
+  findMessage(targetElement);
 });
