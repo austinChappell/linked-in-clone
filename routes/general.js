@@ -243,15 +243,48 @@ router.get('/:id', authRequired, (req, res) => {
 });
 
 router.get('/readmessage/:id', authRequired, (req, res) => {
-  Message.update({ _id: req.params.id }, { $set: { read: true }}, (err, result) => {
+  let messageID = req.params.id;
+
+
+
+  User.findById(req.session.passport.user, (err, result) => {
     if (err) {
       console.log(err);
-      res.redirect('/inbox');
     } else {
-      console.log(result);
-      res.send('message');
-    }
+      console.log('DATA=================================================================', result);
+      result.messages.forEach((message) => {
+        if (message._id === messageID) {
+          message.read = true;
+        };
+      });
+      result.save((error) => {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('RESULT', result);
+          res.send('message');
+        }
+      })
+    };
   });
+
+  // Message.update({ _id: messageID }, { $set: { read: true }}, (err, result) => {
+  //   if (err) {
+  //     console.log(err);
+  //     res.redirect('/inbox');
+  //   } else {
+      // Message.findById(messageID, (error, message) => {
+      //   if (error) {
+      //     console.log(error);
+      //     res.redirect('/inbox');
+      //   } else {
+      //     console.log('THE MESSAGE IS', message);
+      //     console.log('THE ID IS', messageID);
+      //     res.send('message');
+      //   }
+      // });
+  //   }
+  // });
 });
 
 module.exports = router;
