@@ -16,7 +16,12 @@
       <div class="links-right">
         <a href="/profile">Profile</a>
         <a href="/logout">Logout</a>
-        <a id="inbox-icon" href="/inbox"><i class="fa fa-inbox" aria-hidden="true"></i>{{ #userMessages }}<img id="inbox-alert-dot" src="/assets/images/red-dot.png" />{{ /userMessages }}</a>
+        <a id="inbox-icon" href="/inbox"><i class="fa fa-inbox" aria-hidden="true"></i>
+          {{ #userMessages }}
+            {{ ^read }}
+              <img id="inbox-alert-dot" src="/assets/images/red-dot.png" />
+            {{ /read }}
+          {{ /userMessages }}</a>
       </div>
     </div>
     <div class="container">

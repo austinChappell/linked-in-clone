@@ -19,7 +19,7 @@ const messageSchema = new mongoose.Schema({
     default: false
   },
   createdAt: {
-    type: Date,
+    type: String,
     required: true
   }
 });

@@ -141,7 +141,8 @@ router.post('/editprofile', authRequired, (req, res) => {
       console.log(err);
     } else {
       console.log(result);
-      res.redirect('/profile');
+      res.end();
+      // res.redirect('/profile');
     }
   })
 })
@@ -239,6 +240,10 @@ router.get('/:id', authRequired, (req, res) => {
       };
     });
   }
+});
+
+router.post('/readmessage/:id', authRequired, (req, res) => {
+  Message.update({ _id: req.params.id }, { $set: { read: true }});
 });
 
 module.exports = router;

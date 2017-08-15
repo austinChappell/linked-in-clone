@@ -223,11 +223,19 @@ form input {
   right: 139px;
 }
 
+.unread-dot {
+  width: 10px;
+  position: absolute;
+  top: 8px;
+  left: 10px;
+}
+
 .all-messages {
   margin: 30px 0;
 }
 
 .single-message {
+  position: relative;
   border: 1px solid black;
   width: 80%;
   max-width: 500px;
@@ -255,4 +263,14 @@ form input {
   .message-text {
     padding: 10px 30px;
   }
+  .message-footer {
+    font-size: 14px;
+    background-color: lightblue;
+    padding: 5px;
+    cursor: pointer;
+  }
+}
+
+.hide {
+  display: none;
 }

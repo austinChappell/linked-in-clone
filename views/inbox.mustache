@@ -21,17 +21,25 @@
     <div class="all-messages">
       {{ #messages }}
       <div class="single-message">
+        {{ ^read }}
+        <img class="unread-dot" src="assets/images/blue-dot.png">
+        {{ /read }}
         <div class="message-info">
           <span class="from">From: <a href="/{{ senderId }}">{{ senderUsername }}</a></span>
           <span class="date">{{ createdAt }}</span>
           <span class="reply"><a href="/writemessage/{{ senderUsername }}">Reply</a></span>
         </div>
-        <div class="message-text">
-          {{ message }}          
+        <div data-id="{{ _id }}" class="message-text hide">
+          {{ message }}
+        </div>
+        <div class="message-footer">
+          Show
         </div>
       </div>
       {{ /messages }}
     </div>
+    <script type="text/javascript" src="/script.js">
 
+    </script>
   </body>
 </html>
