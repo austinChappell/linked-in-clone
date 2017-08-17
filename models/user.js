@@ -52,7 +52,7 @@ userSchema.statics.authenticate = function(username, password, done) {
     if (err) {
       console.log('Error attempting to use the static authenticate function.', err);
       done(err, false);
-    } else if (user) {
+    } else if (user && user.authenticate(password)) {
       console.log('Should be a successful login.', user);
       done(null, user);
     } else {

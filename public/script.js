@@ -13,7 +13,7 @@ allMessages.addEventListener('click', function(e) {
     if (targetElement.className === 'single-message') {
       const messageID = targetElement.getAttribute('data-id');
       console.log(messageID);
-      window.location = `/readmessage/${ messageID }`;
+      markAsRead(messageID);
     } else {
       targetElement = targetElement.parentElement;
       findMessage(targetElement);
@@ -22,4 +22,21 @@ allMessages.addEventListener('click', function(e) {
   }
 
   findMessage(targetElement);
+
+
+  function markAsRead(id) {
+    fetch(`/readmessage/${ id }`, {
+      headers: {
+        accept: 'application/json',
+        'content-type': 'application/json'
+      },
+      method: 'post',
+      body: { '_id': id }
+    }).then((response) => {
+      return response.json();
+    }).then((result) => {
+      console.log(result);
+    });
+  };
+
 });

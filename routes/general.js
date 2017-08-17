@@ -181,39 +181,61 @@ router.get('/writemessage/:username', authRequired, (req, res) => {
 
 router.post('/writemessage/:id', (req, res) => {
   let senderUsername;
-  User.findById(req.session.passport.user, (err, user) => {
+  let formattedDate = new Date().toDateString();
+
+  let newMessage = new Message({
+    message: req.body.message,
+    senderId: req.session.passport.user,
+    recipientId: req.params.id,
+    senderUsername: senderUsername,
+    read: false,
+    createdAt: formattedDate
+  });
+
+  Message.create(newMessage, (err, message) => {
     if (err) {
       console.log(err);
+      res.redirect('/inbox');
     } else {
-      console.log('SENDER=============================================================================================', user.username);
-      senderUsername = user.username;
-      User.findById(req.params.id, (error, result) => {
-        console.log('SENDERUSERNAME=================================================================================', senderUsername);
-        if (error) {
-          console.log(error);
+      console.log(message);
+
+      User.findById(req.session.passport.user, (err, user) => {
+        if (err) {
+          console.log(err);
         } else {
-          let formattedDate = new Date().toDateString();
-          let newMessage = new Message({
-            message: req.body.message,
-            senderId: req.session.passport.user,
-            senderUsername: senderUsername,
-            read: false,
-            createdAt: formattedDate
-          });
-          result.messages.unshift(newMessage);
-          console.log('RESULT====================================', result);
-          let inbox = result.messages;
-          User.update({ _id: req.params.id }, { $set: { messages: inbox }}, (err, update) => {
-            if (err) {
-              console.log(err);
+          console.log('SENDER=============================================================================================', user.username);
+          senderUsername = user.username;
+          User.findById(req.params.id, (error, result) => {
+            console.log('SENDERUSERNAME=================================================================================', senderUsername);
+            if (error) {
+              console.log(error);
             } else {
-              res.redirect('/directory');
+              let formattedDate = new Date().toDateString();
+              let newMessage = new Message({
+                message: req.body.message,
+                senderId: req.session.passport.user,
+                senderUsername: senderUsername,
+                read: false,
+                createdAt: formattedDate
+              });
+              result.messages.unshift(newMessage);
+              console.log('RESULT====================================', result);
+              let inbox = result.messages;
+              User.update({ _id: req.params.id }, { $set: { messages: inbox }}, (err, update) => {
+                if (err) {
+                  console.log(err);
+                } else {
+                  res.redirect('/directory');
+                }
+              });
             }
-          });
+          })
         }
-      })
-    }
+      });
+    };
   });
+
+
 });
 
 router.get('/inbox', authRequired, (req, res) => {
@@ -242,10 +264,60 @@ router.get('/:id', authRequired, (req, res) => {
   }
 });
 
+
+
+
+
+
+
+
+
+
+router.post('/readmessage/:id', (req, res) => {
+  let messageID = req.params.id;
+  Message.getByIdAndUpdate(messageID, { $set: { read: true } }, (err, result) => {
+    if (err) {
+      throw err;
+    } else {
+      res.json(result);
+    };
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 router.get('/readmessage/:id', authRequired, (req, res) => {
   let messageID = req.params.id;
 
-
+  // function markAsRead(id) {
+  //   Message.getByIdAndUpdate(id, { $set: { read: true } }, (err, result) => {
+  //     if (err) {
+  //       throw err;
+  //     } else {
+  //       res.render()
+  //     }
+  //   });
+  // };
 
   User.findById(req.session.passport.user, (err, result) => {
     if (err) {
