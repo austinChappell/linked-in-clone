@@ -24,23 +24,31 @@ router.post('/signup', (req, res, next) => {
 
   function findSkill(skill) {
 
-    // client.connect().then(() => {
-      const sql = `SELECT * FROM skill WHERE skill = $1`;
-      const params = [skill];
+    const sql = `SELECT * FROM skill WHERE skill = $1`;
+    const params = [skill];
 
-      client.query(sql, params).then((results) => {
+    client.query(sql, params).then((results) => {
 
-        console.log('THESE ARE THE INDIVIDUAL RESULTS ====================', results);
-        if (results.rows.length === 0) {
-          const sql = 'INSERT INTO skill (skill) VALUES ($1)';
-          const params = [skill];
-          client.query(sql, params);
-        }
-      })
-    // }).then((results) => {
-    // }).catch((err) => {
-    //   console.log(err);
-    // });
+      console.log('THESE ARE THE INDIVIDUAL RESULTS ====================', results);
+      if (results.rows.length === 0) {
+        const sql = 'INSERT INTO skill (skill) VALUES ($1)';
+        const params = [skill];
+        client.query(sql, params);
+      }
+    })
+  };
+
+  function saveSkillToUser(skill, user_id) {
+    const sql = 'SELECT * FROM skill WHERE skill = $1';
+    const params = [skill];
+
+    client.query(sql, params).then((results) => {
+      const skill_id = results.rows[0].skill_id;
+      const sql = 'INSER INTO user_skill (user_id, skill_id) VALUES ($1, $2)';
+      const params = [user_id, skill_id];
+
+      client.query(sql, params);
+    })
   };
 
   // eliminate any white space at the beginning or end of each element in the array
@@ -106,13 +114,17 @@ router.post('/signup', (req, res, next) => {
     const userID = results.rows[0].user_id;
     const sql = `INSERT INTO address
     (user_id, street_num, street_name, city, state_or_province, country)
-    VALUES ($1, $2, $3, $4, $5, $6)`;
+    VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`;
     const params = [userID, streetNum, streetName, city, state, country];
 
     return client.query(sql, params);
-  }).then(() => {
+  }).then((results) => {
+    const userID = results.rows[0].user_id;
     skillsArr.forEach((skill) => {
       findSkill(skill);
+    });
+    skillsArr.forEach((skill) => {
+      saveSkillToUser(skill, userID);
     });
   }).then(() => {
     next();
