@@ -22,6 +22,27 @@ router.get('/signup', (req, res) => {
 
 router.post('/signup', (req, res, next) => {
 
+  function findSkill(skill) {
+
+    // client.connect().then(() => {
+      const sql = `SELECT * FROM skill WHERE skill = $1`;
+      const params = [skill];
+
+      client.query(sql, params).then((results) => {
+
+        console.log('THESE ARE THE INDIVIDUAL RESULTS ====================', results);
+        if (results.rows.length === 0) {
+          const sql = 'INSERT INTO skill (skill) VALUES ($1)';
+          const params = [skill];
+          client.query(sql, params);
+        }
+      })
+    // }).then((results) => {
+    // }).catch((err) => {
+    //   console.log(err);
+    // });
+  };
+
   // eliminate any white space at the beginning or end of each element in the array
   function clearSpace(arr) {
     let newArr = [];
@@ -51,14 +72,14 @@ router.post('/signup', (req, res, next) => {
         job = req.body.job,
         company = req.body.company,
         phone = req.body.phone,
-        skillsArr = req.body.skills.toUpperCase().split(';'),
         streetNum = req.body.street_num,
         streetName = req.body.street_name,
         city = req.body.city,
         state = req.body.state_or_province,
         country = req.body.country;
 
-  const skillArr = clearSpace(skillsArr);
+  let skillsArr = req.body.skills.toUpperCase().split(';');
+  skillsArr = clearSpace(skillsArr);
 
   const passwordHash = bcrypt.hashSync(password, 10);
   const client = new Client();
@@ -90,12 +111,17 @@ router.post('/signup', (req, res, next) => {
 
     return client.query(sql, params);
   }).then(() => {
+    skillsArr.forEach((skill) => {
+      findSkill(skill);
+    });
+  }).then(() => {
     next();
   }).catch((err) => {
     console.log(err);
     res.redirect('/signup');
   });
 },
+
 passport.authenticate('local', {
   successRedirect: '/directory'
 }));
