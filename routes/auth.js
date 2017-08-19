@@ -22,6 +22,26 @@ router.get('/signup', (req, res) => {
 
 router.post('/signup', (req, res, next) => {
 
+  // eliminate any white space at the beginning or end of each element in the array
+  function clearSpace(arr) {
+    let newArr = [];
+    arr.forEach((item) => {
+      while (item[0] === ' ') {
+        let newItem = item.slice(1, item.length);
+        item = newItem;
+      }
+      while (item[item.length - 1] === ' ') {
+        let newItem = item.slice(0, item.length - 1);
+        item = newItem;
+      }
+      if (item !== '') {
+        newArr.push(item);
+      }
+    });
+    return newArr;
+  };
+
+
   const username = req.body.username,
         password = req.body.password,
         name = req.body.name,
@@ -30,23 +50,55 @@ router.post('/signup', (req, res, next) => {
         university = req.body.university,
         job = req.body.job,
         company = req.body.company,
-        phone = req.body.phone;
+        phone = req.body.phone,
+        skillsArr = req.body.skills.toUpperCase().split(';'),
+        streetNum = req.body.street_num,
+        streetName = req.body.street_name,
+        city = req.body.city,
+        state = req.body.state_or_province,
+        country = req.body.country;
+
+  const skillArr = clearSpace(skillsArr);
 
   const passwordHash = bcrypt.hashSync(password, 10);
   const client = new Client();
 
   client.connect().then(() => {
-    const sql = `INSERT INTO usertable (username, passwordhash, name, avatar, email, university, job, company, phone) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`;
+    const sql = `
+      INSERT INTO usertable
+        (username, passwordhash, name, avatar, email, university, job, company, phone)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+        RETURNING *`;
 
-    const params = [username, passwordHash, name, avatar, email, university, job, company, phone];
+    let params = [username, passwordHash, name, avatar, email, university, job, company, phone];
+
+    params = params.map((param) => {
+      if (param == '') {
+        param = null;
+      };
+      return param;
+    });
+
+    return client.query(sql, params);
+  }).then((results) => {
+
+    const userID = results.rows[0].user_id;
+    const sql = `INSERT INTO address
+    (user_id, street_num, street_name, city, state_or_province, country)
+    VALUES ($1, $2, $3, $4, $5, $6)`;
+    const params = [userID, streetNum, streetName, city, state, country];
 
     return client.query(sql, params);
   }).then(() => {
-    passport.authenticate('local', {
-      successRedirect: '/directory'
-    });
+    next();
+  }).catch((err) => {
+    console.log(err);
+    res.redirect('/signup');
   });
-});
+},
+passport.authenticate('local', {
+  successRedirect: '/directory'
+}));
 
 
 
@@ -79,9 +131,9 @@ router.post('/signup', (req, res, next) => {
 //   successRedirect: '/directory'
 // }));
 //
-// router.get('/logout', (req, res) => {
-//   req.logout();
-//   res.redirect('/');
-// });
+router.get('/logout', (req, res) => {
+  req.logout();
+  res.redirect('/');
+});
 
 module.exports = router;

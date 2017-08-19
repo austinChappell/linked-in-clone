@@ -1,23 +1,24 @@
 const bcrypt = require('bcryptjs');
 const { Client } = require('pg');
 
-const checkPassword = function(password) {
-  return bcrypt.compareSync(password, this.passwordHash);
+const checkPassword = function(password, passwordHash) {
+  return bcrypt.compareSync(password, passwordHash);
 };
 
 const checkUser = function(username, password, done) {
-  const client = new Client()
+  const client = new Client();
 
-  client.connect(() => {
+  client.connect().then(() => {
 
     const sql = 'SELECT * FROM usertable WHERE username = $1';
     const params = [username];
 
-    return client.query(sql, params)
+    return client.query(sql, params);
   }).then((results) => {
+      console.log('RESULTS', results.rows);
       const user = results.rows[0];
 
-      if (user && checkPassword(password)) {
+      if (user && checkPassword(password, user.passwordhash)) {
       console.log('Should be a successful login.', user);
       done(null, user);
     } else {
@@ -26,3 +27,5 @@ const checkUser = function(username, password, done) {
     };
   });
 };
+
+module.exports = { checkUser }

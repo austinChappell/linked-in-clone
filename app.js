@@ -7,6 +7,10 @@ const express = require('express'),
       passport = require('passport'),
       session = require('express-session');
 
+require('dotenv').config();
+
+let port = process.env.PORT || 3000;
+
 mongoose.connect('mongodb://localhost:27017/robots', {
   useMongoClient: true
 });
@@ -34,6 +38,6 @@ app.engine('mustache', mustacheExpress());
 app.set('view engine', 'mustache');
 app.set('views', __dirname + '/views');
 
-app.listen(3000, function() {
-  console.log(`Your server has started on PORT 3000`);
+app.listen(port, function() {
+  console.log(`Your server has started on PORT ${ port }.`);
 });
